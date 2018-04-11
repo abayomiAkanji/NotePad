@@ -35,8 +35,6 @@ class App : Application() {
     private fun fetchNoteFromServer() {
         val query = ParseQuery.getQuery(Note::class.java)
         query.orderByDescending("updatedAt")
-        query.fromPin(getString(R.string.key_note_pin))
-
         query.findInBackground(FindCallback<Note> { noteList, e ->
             if (e == null) {
                 if (noteList.count() > 0) {
