@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         fetchNotesFromLocalDataStore()
     }
 
-    fun fetchNotesFromLocalDataStore(){
+    private fun fetchNotesFromLocalDataStore(){
         val query = ParseQuery.getQuery(Note::class.java)
         query.orderByDescending("updatedAt")
         query.fromPin(getString(R.string.key_note_pin))
