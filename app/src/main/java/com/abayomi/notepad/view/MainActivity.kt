@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * This fetching note(s) from a local store
+     * This fetching note(s) from a local store.
      */
     private fun fetchNotesFromLocalDataStore(){
         val query = ParseQuery.getQuery(Note::class.java)
