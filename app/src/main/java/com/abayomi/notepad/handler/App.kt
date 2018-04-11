@@ -1,9 +1,9 @@
 package com.abayomi.notepad.handler
 
 import android.app.Application
+import com.abayomi.notepad.R
 import com.abayomi.notepad.model.Note
-import com.parse.Parse
-import com.parse.ParseObject
+import com.parse.*
 
 /**
  * Created by dammy_abayomi on 4/10/18
@@ -14,6 +14,8 @@ class App : Application() {
         super.onCreate()
 
         initParseServer()
+
+        fetchNoteFromServer()
     }
 
     private fun initParseServer() {
@@ -28,6 +30,31 @@ class App : Application() {
                 .build()
         )
 
+    }
+
+    private fun fetchNoteFromServer() {
+        val query = ParseQuery.getQuery(Note::class.java)
+        query.orderByDescending("updatedAt")
+        query.fromPin(getString(R.string.key_note_pin))
+
+        query.findInBackground(FindCallback<Note> { noteList, e ->
+            if (e == null) {
+                if (noteList.count() > 0) {
+                    pinNotesToLocalDataStore(noteList)
+                }
+            } else {
+                e.printStackTrace()
+            }
+        })
+    }
+
+    private fun pinNotesToLocalDataStore(list: List<Note>) {
+        val noteKey = getString(R.string.key_note_pin)
+        ParseObject.unpinAllInBackground(noteKey) { e ->
+            if (e == null) {
+                ParseObject.pinAllInBackground(noteKey, list)
+            }
+        }
     }
 
 }
