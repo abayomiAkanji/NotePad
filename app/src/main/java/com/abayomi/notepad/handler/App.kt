@@ -32,6 +32,11 @@ class App : Application() {
 
     }
 
+    /**
+     * This method attempts to fetche note from the remote server.
+     * If note exists, it pinned it to the localDataStore so device
+     * can use it at any point in time
+     */
     private fun fetchNoteFromServer() {
         val query = ParseQuery.getQuery(Note::class.java)
         query.orderByDescending("updatedAt")
@@ -46,6 +51,9 @@ class App : Application() {
         })
     }
 
+    /**
+     * This method pins the NoteList to the localDataStore
+     */
     private fun pinNotesToLocalDataStore(list: List<Note>) {
         val noteKey = getString(R.string.key_note_pin)
         ParseObject.unpinAllInBackground(noteKey) { e ->
