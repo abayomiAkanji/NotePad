@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         fetchNotesFromLocalDataStore()
     }
 
+    /**
+     * This fetching note(s) from a local store
+     */
     private fun fetchNotesFromLocalDataStore(){
         val query = ParseQuery.getQuery(Note::class.java)
         query.orderByDescending("updatedAt")
