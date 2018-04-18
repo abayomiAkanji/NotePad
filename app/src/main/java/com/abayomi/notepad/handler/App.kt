@@ -13,12 +13,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        initParseServer()
+        initParseLibrary()
 
         fetchNoteFromServer()
     }
 
-    private fun initParseServer() {
+    private fun initParseLibrary() {
         Parse.enableLocalDatastore(applicationContext)
         ParseObject.registerSubclass(Note::class.java)
 
