@@ -22,7 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     }
 
-    private fun sleepScreen(){
+    private fun sleepScreen() {
         object : Thread() {
             override fun run() {
                 try {
