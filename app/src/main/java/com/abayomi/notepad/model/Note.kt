@@ -10,26 +10,52 @@ import java.util.*
  */
 
 @ParseClassName("Note")
-class Note : ParseObject(){
+class Note : ParseObject() {
 
-    fun setTitle(title : String) = put("title", title)
+    /**
+     * This method sets the note's title
+     * put() is an inbuilt method in the ParseObject class
+     */
+    fun setTitle(title: String) = put("title", title)
 
-    fun setDetails(details : String) = put("details", details)
+    /**
+     * This method sets the note's details
+     * put() is an inbuilt method in the ParseObject class
+     */
+    fun setDetails(details: String) = put("details", details)
 
+    /**
+     * This method returns the note's title
+     * getString() is an inbuilt method in the ParseObject class
+     */
     fun getTitle() = getString("title")
 
+    /**
+     * This method returns the note's details
+     * getString() is an inbuilt method in the ParseObject class
+     */
     fun getDetails() = getString("details")
 
-    fun getDateCreated() = try{getFormattedDateString(createdAt)}catch (e : IllegalStateException){getFormattedDateString(Date())}
+    /**
+     * This method returns the formatted text of date the note was updated
+     * updatedAt is an inbuilt method in the ParseObject
+     */
+    fun getDateUpdated() = try {
+        getFormattedDateString(updatedAt)
+    } catch (e: IllegalStateException) {
+        getFormattedDateString(Date())
+    }
 
-    fun getDateUpdated() = try{getFormattedDateString(updatedAt)}catch (e : IllegalStateException){getFormattedDateString(Date())}
-
+    /**
+     * This method is used to format dates so it can be more presentable in the
+     * pattern "MM/dd/yyyy HH:mm"
+     */
     private fun getFormattedDateString(date: Date): String {
         val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm")
 
         return try {
             return sdf.format(date).toString()
-        }catch (e : Exception){
+        } catch (e: Exception) {
             sdf.format(Date()).toString()
         }
     }

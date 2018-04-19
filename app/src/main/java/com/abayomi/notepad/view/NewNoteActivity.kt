@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.abayomi.notepad.R
 import com.abayomi.notepad.databinding.ActivityNewNoteBinding
 import com.abayomi.notepad.model.Note
-import java.util.*
 
 class NewNoteActivity : AppCompatActivity(), View.OnClickListener{
 
@@ -25,6 +24,9 @@ class NewNoteActivity : AppCompatActivity(), View.OnClickListener{
 
     }
 
+    /**
+     * The override onClick method of the View.OnClickListener interface
+     */
     override fun onClick(view: View?) {
         when(view!!.id){
             R.id.button_save_note -> attemptToSaveNote()
@@ -33,7 +35,8 @@ class NewNoteActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     /**
-     * Validate the input values and save the contents
+     * This method initially validate the input values.
+     * If they are correct values, then the note is being saved to a local storage.
      */
     private fun attemptToSaveNote(){
         val title = mBinding.etTitle.text.toString()
@@ -49,13 +52,19 @@ class NewNoteActivity : AppCompatActivity(), View.OnClickListener{
             return
         }
 
-        //create note object and set it's members
+        //create note object and set it's members/fields
         val note = Note()
         note.setTitle(title)
         note.setDetails(details)
 
-        note.saveEventually() //attempt save contents to server when their is internet connection
-        note.pin(getString(R.string.key_note_pin)) //pin object to localDataStore so user can manipulate it locally
+        //this save the note to the server at an unspecified time (whenever there is internet connection)
+        note.saveEventually()
+
+        /**
+         * this saves the object to local Storage so user can manipulate it locally.
+         * The pin is the name of the local storage
+         */
+        note.pin(getString(R.string.key_note_pin))
 
         showToast("Note saved successfully.")
 

@@ -3,7 +3,10 @@ package com.abayomi.notepad.handler
 import android.app.Application
 import com.abayomi.notepad.R
 import com.abayomi.notepad.model.Note
-import com.parse.*
+import com.parse.FindCallback
+import com.parse.Parse
+import com.parse.ParseObject
+import com.parse.ParseQuery
 
 /**
  * Created by dammy_abayomi on 4/10/18
@@ -18,6 +21,10 @@ class App : Application() {
         fetchNoteFromServer()
     }
 
+    /**
+     * This method initializes the parse library that was added to the gradle file.
+     * This makes the parse library usable in this project (in any classes)
+     */
     private fun initParseLibrary() {
         Parse.enableLocalDatastore(applicationContext)
         ParseObject.registerSubclass(Note::class.java)
@@ -33,7 +40,7 @@ class App : Application() {
     }
 
     /**
-     * This method attempts to fetche note from the remote server.
+     * This method attempts to fetch note from the remote server.
      * If note exists, it pinned it to the localDataStore so device
      * can use it at any point in time
      */
@@ -56,8 +63,11 @@ class App : Application() {
      */
     private fun pinNotesToLocalDataStore(list: List<Note>) {
         val noteKey = getString(R.string.key_note_pin)
+
+        //first remove the old notes
         ParseObject.unpinAllInBackground(noteKey) { e ->
             if (e == null) {
+                //save the new notes afresh
                 ParseObject.pinAllInBackground(noteKey, list)
             }
         }

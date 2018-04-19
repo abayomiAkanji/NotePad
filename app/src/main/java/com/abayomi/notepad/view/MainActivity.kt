@@ -3,7 +3,6 @@ package com.abayomi.notepad.view
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        mBinding.fab.setOnClickListener { view ->
             startActivity(Intent(this, NewNoteActivity::class.java))
         }
 
@@ -43,18 +42,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * This fetching note(s) from a local store.
+     * This method fetches note(s) from a local storage (NOT the remote server)
      */
     private fun fetchNotesFromLocalDataStore(){
         val query = ParseQuery.getQuery(Note::class.java)
         query.orderByDescending("updatedAt")
-        query.fromPin(getString(R.string.key_note_pin))
+        query.fromPin(getString(R.string.key_note_pin)) //this pin specifies that the query should be executed in a local storage
 
         query.findInBackground(FindCallback<Note> { noteList, e ->
             if(e == null){
                 if(noteList.count() > 0){
+                    //the query successfully retrieved so note, hence, create a recycler view
                     setUpRecyclerView(noteList)
                 }else{
+                    //show a text view displaying that there are no notes
                     mBinding.textViewNoNote.visibility = View.VISIBLE
                 }
             }else{
@@ -63,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * This method sets up the recycler view using the NoteAdapter class
+     */
     private fun setUpRecyclerView(noteList: List<Note>) {
         val layoutManager = LinearLayoutManager(this)
         mBinding.recyclerView.layoutManager = layoutManager
