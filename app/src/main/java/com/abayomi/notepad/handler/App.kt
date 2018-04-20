@@ -17,7 +17,6 @@ class App : Application() {
         super.onCreate()
 
         initParseLibrary()
-
         fetchNoteFromServer()
     }
 
